@@ -48,23 +48,31 @@ export default function ProfileScreen({ navigation }) {
         </TouchableOpacity>
       </View>
 
-      {/* Itens de navegação / placeholders */}
+      
       <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('AccountSettings')}>
         <Text style={styles.itemIcon}>🛠️</Text>
         <Text style={styles.itemText}>Configurações da Conta</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.item} onPress={() => Alert.alert('Pagamentos', 'Em breve')}>
-        <Text style={styles.itemIcon}>💳</Text>
-        <Text style={styles.itemText}>Métodos de Pagamento</Text>
+      <TouchableOpacity
+          style={styles.item}
+          onPress={() => navigation.navigate('Payments')}
+  >
+          <Text style={styles.itemIcon}>💳</Text>
+          <Text style={styles.itemText}>Métodos de Pagamento</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.item} onPress={() => Alert.alert('Ajuda', 'Em breve')}>
+
+      <TouchableOpacity
+          style={styles.item}
+          onPress={() => navigation.navigate('Support')}  
+      >
         <Text style={styles.itemIcon}>❓</Text>
         <Text style={styles.itemText}>Ajuda e Suporte</Text>
       </TouchableOpacity>
 
-      {/* Sair */}
+
+   
       <TouchableOpacity style={styles.logout} onPress={signOut}>
         <Text style={styles.logoutIcon}>⎋</Text>
         <Text style={styles.logoutText}>Sair</Text>
@@ -87,16 +95,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 14,
   },
-  /* botão de voltar no canto superior esquerdo */
+
   backWrap: {
     flexDirection: 'row',
     alignItems: 'center',
-    width: 72, // garante espaço fixo para centralizar o título
+    width: 72, 
   },
   backArrow: { color: '#000000ff', fontSize: 20, marginRight: 6 },
   backLabel: { color: '#000000ff', fontSize: 14, fontWeight: '700' },
 
-  appbarTitle: { color: '#fff', fontSize: 16, fontWeight: '700', flex: 1, textAlign: 'center' },
+  appbarTitle: { color: '#000000ff', fontSize: 16, fontWeight: '700', flex: 1, textAlign: 'center' },
 
   card: {
     backgroundColor: '#fff',

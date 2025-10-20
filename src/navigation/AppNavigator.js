@@ -8,6 +8,9 @@ import { useAuth } from '../context/AuthContext';
 import ProfileScreen from '../screens/ProfileScreen';
 import AccountSettingsScreen from '../screens/AccountSettingsScreen';
 import EditProfileScreen from '../screens/EditProfileScreen';
+import SupportScreen from '../screens/SupportScreen';
+import PaymentMethodsScreen from '../screens/PaymentMethodsScreen';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -53,6 +56,8 @@ function MainStack() {
       <Stack.Screen name="Profile" component={ProfileScreen} />
       <Stack.Screen name="AccountSettings" component={AccountSettingsScreen} />
       <Stack.Screen name="EditProfile" component={EditProfileScreen} />
+      <Stack.Screen name="Support" component={SupportScreen} />
+      <Stack.Screen name="Payments" component={PaymentMethodsScreen} />
     </Stack.Navigator>
   );
 }

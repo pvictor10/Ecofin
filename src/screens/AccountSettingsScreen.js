@@ -23,19 +23,17 @@ import { db } from '../services/firebase';
 export default function AccountSettingsScreen({ navigation }) {
   const { user } = useAuth();
 
-  // Preferências (por enquanto locais + persistência simples no Firestore)
   const [darkMode, setDarkMode] = useState(false);
   const [notifications, setNotifications] = useState(true);
 
-  // Alterar senha
+
   const [currentPass, setCurrentPass] = useState('');
   const [newPass, setNewPass] = useState('');
   const [loadingPass, setLoadingPass] = useState(false);
 
-  // Excluir conta
+
   const [deleting, setDeleting] = useState(false);
 
-  // ---- Persistência simples de preferências (opcional) ----
   async function persistPreferences() {
     try {
       const ref = doc(db, 'users', user.uid);
@@ -59,7 +57,7 @@ export default function AccountSettingsScreen({ navigation }) {
     persistPreferences();
   }
 
-  // ---- Alterar senha ----
+
   async function handleChangePassword() {
     if (!currentPass || !newPass) {
       Alert.alert('Atenção', 'Preencha a senha atual e a nova senha.');
@@ -72,11 +70,11 @@ export default function AccountSettingsScreen({ navigation }) {
     try {
       setLoadingPass(true);
 
-      // Reautenticar
+      
       const cred = EmailAuthProvider.credential(user.email, currentPass);
       await reauthenticateWithCredential(user, cred);
 
-      // Atualizar senha
+     
       await updatePassword(user, newPass);
 
       setCurrentPass('');
@@ -96,9 +94,6 @@ export default function AccountSettingsScreen({ navigation }) {
     }
   }
 
-  // ========= FLUXO DE EXCLUSÃO (compatível com web) =========
-
-  // 1) Confirmação
   function confirmDelete() {
     if (Platform.OS === 'web') {
       const ok = window.confirm(
@@ -108,7 +103,7 @@ export default function AccountSettingsScreen({ navigation }) {
       return;
     }
 
-    // iOS/Android nativos
+
     Alert.alert(
       'Excluir conta',
       'Isso apagará sua conta permanentemente. Deseja continuar?',
@@ -119,7 +114,7 @@ export default function AccountSettingsScreen({ navigation }) {
     );
   }
 
-  // 2) Pede senha (quando necessário)
+ 
   function promptPassword() {
     return new Promise((resolve) => {
       if (Platform.OS === 'web') {
@@ -128,7 +123,7 @@ export default function AccountSettingsScreen({ navigation }) {
         return;
       }
 
-      // iOS tem Alert.prompt; Android não. Para Android, ideal é um modal próprio.
+    
       if (Alert.prompt) {
         Alert.prompt(
           'Confirmar senha',
@@ -140,21 +135,20 @@ export default function AccountSettingsScreen({ navigation }) {
           'secure-text'
         );
       } else {
-        // fallback — implemente um modal próprio se quiser a UX perfeita no Android
+        
         resolve(null);
       }
     });
   }
 
-  // 3) Orquestra o fluxo (chama deleteAccount com ou sem senha)
+ 
   async function handleDeleteFlow() {
     try {
       setDeleting(true);
 
-      // Caso o usuário já tenha digitado a senha na seção de segurança, usa aqui.
       await deleteAccount(currentPass || undefined);
     } catch (e) {
-      // Se for necessário reautenticar, solicita senha e tenta novamente
+   
       if (e?.message === 'REAUTH_NEEDED') {
         const pass = await promptPassword();
         if (!pass) {
@@ -176,10 +170,10 @@ export default function AccountSettingsScreen({ navigation }) {
     }
   }
 
-  // 4) Função que executa a exclusão em si
+
   async function deleteAccount(passArg) {
     try {
-      // Se não temos senha, pedimos reautenticação
+     
       const passwordToUse = passArg || currentPass;
       if (!passwordToUse) {
         throw new Error('REAUTH_NEEDED');
@@ -188,12 +182,12 @@ export default function AccountSettingsScreen({ navigation }) {
       const cred = EmailAuthProvider.credential(user.email, passwordToUse);
       await reauthenticateWithCredential(user, cred);
 
-      // Exclui a conta do Firebase Auth (isso desconecta automaticamente)
+   
       await deleteUser(user);
 
       Alert.alert('Conta excluída', 'Sua conta foi removida.');
     } catch (e) {
-      // repassa o erro para o orquestrador decidir o que fazer
+      
       throw e;
     }
   }

@@ -45,7 +45,7 @@ export default function LoginScreen({ navigation }) {
   };
 
   const handleOpenReset = () => {
-    setResetEmail(email.trim()); // preenche com o e-mail digitado (se houver)
+    setResetEmail(email.trim()); 
     setResetOpen(true);
   };
 

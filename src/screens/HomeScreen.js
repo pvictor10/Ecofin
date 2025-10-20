@@ -10,7 +10,7 @@ import {
 import { useAuth } from '../context/AuthContext';
 import HeaderBar from '../components/HeaderBar';
 
-// Serviços do Firestore
+
 import {
   subscribeUserTransactions,
   subscribeUserBudget,
@@ -42,11 +42,11 @@ export default function HomeScreen() {
   const { user, signOut } = useAuth();
   const nameOrEmail = user?.displayName || user?.email || 'Usuário';
 
-  // Estado dos dados
-  const [transactions, setTransactions] = useState([]);
-  const [budget, setBudget] = useState(null); // { limit: number }
 
-  // Subscriptions (tempo real)
+  const [transactions, setTransactions] = useState([]);
+  const [budget, setBudget] = useState(null); 
+
+ 
   useEffect(() => {
     const unsubTx = subscribeUserTransactions(setTransactions);
     const unsubBudget = subscribeUserBudget(setBudget);
@@ -77,10 +77,10 @@ export default function HomeScreen() {
   }, [totalExpense, budgetLimit]);
 
   const showBudgetAlert =
-    budgetLimit > 0 && totalExpense > budgetLimit; // só mostra se ultrapassar
+    budgetLimit > 0 && totalExpense > budgetLimit; 
 
   const handleOpenBudget = async () => {
-    // Prompt simples no Web; no mobile depois podemos trocar por modal nativo
+   
     let value = null;
     if (Platform.OS === 'web') {
       value = window.prompt('Defina seu orçamento mensal (R$):', String(budgetLimit || ''));
